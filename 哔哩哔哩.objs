@@ -1,0 +1,135 @@
+hookClass("BBPhoneNavigator", {}, {
+  //去除青少年弹窗
+  "B16@0:8-isNeedShowTeenagersModeAlert": function() {
+    return false;//orig(arguments);
+  }
+});
+hookClass("BBAdCardVideoInfoModel", {}, {
+  //去除播放页视频列表广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBPhonePegasusAdModel", {}, {
+  //去除首页格子广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBPhoneMPMainVC", {}, {
+  //去除up主推荐的广告banner
+  "v16@0:8-makeAdCardView": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BFCSplashManager", {}, {
+  //去除启动广告
+  "B16@0:8-disableSplash": function() {
+    return true;//orig(arguments);
+  }
+});
+hookClass("BBAdMFData", {}, {
+  //去除关注动态页信息流广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBAdDanmakuManager", {}, {
+  //去除播放中广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBPhonePegasusAdBaseModel", {}, {
+  //去除首页格子广告-新
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BFCSplashManager", {}, {
+  //去除启动广告-新
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBPhoneNavigator", {}, {
+  //去除青少年弹窗
+  "v16@0:8-showTeenagersModeAlert": function() {
+    //return orig(arguments);
+  },
+  "v20@0:8B16-showTeenagersModeAlertWithScene:": function() {
+    //return orig(arguments);
+  },
+  "v20@0:8B16-showTeenagersModeAlertInManager:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBPhoneMPRecVideosVM", {}, {
+  //去除播放页视频列表广告
+  "v24@0:8@16-setRelates:": function() {
+    let arr = unbox(arguments[0]);
+    if(arr){
+      for(let i = 0; i < arr.length; ++i){
+        if(arr[i].is_ad){
+          arr.splice(i--, 1);
+        }
+      }
+      arguments[0] = @(arr);
+    }
+    return orig(arguments);
+  }
+});
+hookClass("BBPhoneRestrictedModeManager", {}, {
+  //去除青少年弹窗
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBAdUgcFloatingModel", {}, {
+  //去除播放器右下角up主推荐的广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBPhoneMPUperAdCardVM", {}, {
+  //去除播放器下方up主推荐的广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBDFBusinessBaseViewController", {}, {
+  //去除关注动态页信息流广告
+  "v24@0:8@16-setDataSource:": function() {
+    let arr = unbox(arguments[0]);
+    if(arr){
+      for(let i = 0; i < arr.length; ++i){
+        if("adModel" in arr[i] && arr[i].adModel){
+          arr.splice(i--, 1);
+        }
+      }
+      arguments[0] = @(arr);
+    }
+    return orig(arguments);
+  }
+});
+hookClass("BBPhoneMPPanBottomVC", {}, {
+  //去除播放器下方up主推荐的广告
+  "v16@0:8-_makeAdCardView": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BBMediaRelateVideoObject", {}, {
+  //去除播放页视频列表广告
+  "v24@0:8@16-setRelateVideos:": function() {
+    let arr = unbox(arguments[0]);
+    if(arr){
+      for(let i = 0; i < arr.length; ++i){
+        if(!arr[i].relate.hasAuthor){
+          arr.splice(i--, 1);
+        }
+      }
+      arguments[0] = @(arr);
+    }
+    return orig(arguments);
+  }
+});
