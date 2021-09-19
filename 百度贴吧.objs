@@ -1,0 +1,87 @@
+hookClass("TBCSplashLaunchADManager", {}, {
+  //去除冷启动广告
+  "v16@0:8-judgeShowSplashLaunch": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("TBCHotSplashManager", {}, {
+  //去除热启动广告
+  "B16@0:8-canShowSplashAd": function() {
+    return false;//orig(arguments);
+  }
+});
+hookClass("TBCLaunchADViewController", {}, {
+  //去除另一种启动广告
+  "B16@0:8-useMobAdSDKSwitch": function() {
+    return false;//orig(arguments);
+  }
+});
+hookClass("TBCChoicenessHeaderView", {}, {
+  //去除搜索栏右侧任务
+  "v16@0:8-addTaskEntranceSyncKVO": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("TBCTabMyBannerItem", {}, {
+  //去除个人页banner
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("TBCSwanHistoryItem", {}, {
+  //去除个人页推荐app
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("TBCPromotionItem", {}, {
+  //去除公共信息流广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("TBCHomePageViewController", {}, {
+  //去除首页顶部banner广告
+  "v24@0:8@16-setHeaderView:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("TBCVideoMiddleAdItem", {}, {
+  //去除视频列表广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("TBCBackInsertADVModel", {}, {
+  //去除视频列表播放结束广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("TBCHomePageIDL", {}, {
+  //去除首页直播信息流
+  "v24@0:8@16-setThreadList:": function() {
+    let list = unbox(arguments[0]);
+    if(list){
+      for(let i = 0; i < list.length; ++i){
+        if(list[i].alaLiveInfo){
+          list.splice(i--, 1);
+        }
+      }
+    }
+    arguments[0] = @(list);
+    return orig(arguments);
+  }
+});
+hookClass("TBClientAppDelegate", {}, {
+  //去除新版启动广告
+  "B16@0:8-shouldShowLaunchAd": function() {
+    return false;//orig(arguments);
+  }
+});
+hookClass("TBCActivityFloatingView", {}, {
+  //去除活动飘窗
+  "v24@0:8@16-showCurrentVCView:": function() {
+    //return orig(arguments);
+  }
+});
