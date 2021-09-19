@@ -1,0 +1,114 @@
+hookClass("NMStartupAdvertisement", {}, {
+  //去除启动广告
+  "@24@0:8@16-initWithDictionary:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMAppDelegate", {}, {
+  //去除启动广告 5.3.0补充
+  "v16@0:8-showAdvertisementIfNeeded": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMDiscoveryBannerView", {}, {
+  //过滤首页顶部banner广告
+  "@16@0:8-contents": function() {
+    let views = orig(arguments);
+    for(let i = 0; i < views.count; ++i){
+      let view = views[i];
+      if(view.typeTagView.text == "广告"){
+        [views removeObjectAtIndex: i--];
+      }
+    }
+    return views;
+  }
+});
+hookClass("NMSearchViewController", {}, {
+  //去除搜索页顶部banner广告
+  "v16@0:8-loadAds": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMDiscoverRecommendDataGroup", {}, {
+  //去除首页信息流广告
+  "@24@0:8@16-initWithDicInfo:": function() {
+    let obj = orig(arguments);
+    if(obj.advertisement){
+      return;
+    }
+    return obj;
+  }
+});
+hookClass("NMCommentList", {}, {
+  //去除评论区广告
+  "v16@0:8-_loadAdvertisement": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMCommentReplyList", {}, {
+  //去除评论回复列表广告
+  "@16@0:8-subReplyComments": function() {
+    let comments = orig(arguments);
+    for(let i = 0; i < comments.count; ++i){
+      let comment = comments[i];
+      if(comment.ad){
+        [comments removeObjectAtIndex: i--];
+      }
+    }
+    return comments;
+  }
+});
+hookClass("NMVideoRecommendAdvertisement", {}, {
+  //去除相似视频列表广告
+  "@24@0:8@16-initWithDictionary:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMVideoTimelineVideoAdContent", {}, {
+  //去除视频页信息流广告
+  "@24@0:8@16-initWithDictionary:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMShareMenuContainerView", {}, {
+  //去除分享页顶部广告
+  "v16@0:8-loadAdInfo": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMImageAdEvent", {}, {
+  //去除动态页图片广告
+  "@24@0:8@16-initWithDictionary:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMVideoAdEvent", {}, {
+  //去除动态页视频广告
+  "@24@0:8@16-initWithDictionary:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMSearchResultViewController", {}, {
+  //去除搜索结果页banner广告
+  "v24@0:8@16-fetchAdvertisementDataWithKeyword:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMAdvertisement", {}, {
+  //去除公共广告
+  "@24@0:8@16-initWithDictionary:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMVideoTimelineImageAdContent", {}, {
+  //去除视频推荐页信息流广告
+  "@24@0:8@16-initWithDictionary:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("NMExposureMoment", {}, {
+  //去除评论区广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
