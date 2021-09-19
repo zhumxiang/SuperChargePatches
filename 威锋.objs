@@ -1,0 +1,121 @@
+hookClass("BUAdSDKManager", {}, {
+  //去除BU公共广告
+  "@16@0:8-appID": function() {
+    //return orig(arguments);
+  }
+});
+@function id NSStringFromClass(id);
+hookClass("fengapp.MainTabBarController", {}, {
+  //快速跳过启动画面
+  "v20@0:8B16-viewDidAppear:": function() {
+    for(let i = UIApplication.sharedApplication.windows.count - 1; i >= 2; --i){
+      let win = UIApplication.sharedApplication.windows[i];
+      //排除flexible工具条
+      if(NSStringFromClass(win.class) == "UIWindow"){
+        win.hidden = true;
+        break;
+      }
+    }
+    return orig(arguments);
+  }
+});
+hookClass("GDTAdManager", {}, {
+  //去除广点通公共广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("BUAdSlot", {}, {
+  //去除BU公共广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("VungleSDK", {}, {
+  //去除vungle公共广告
+  "@24@0:8@16-initWithDefaults:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("fengapp.UserCenterViewController", {}, {
+  //去除个人中心banner广告
+  "d32@0:8@16@24-tableView:heightForRowAtIndexPath:": function() {
+    let ret = orig(arguments);
+    if(ret == -1){
+      return ret;
+    }
+    let [view, index] = arguments;
+    view.delegate = null;
+    let cell = [self tableView:view cellForRowAtIndexPath:index];
+    view.delegate = self;
+    if(cell.reuseIdentifier == "UserBannerCell"){
+      return 0;
+    }
+    return ret;
+  },
+  "@32@0:8@16@24-tableView:cellForRowAtIndexPath:": function() {
+    let cell = orig(arguments);
+    if(cell.reuseIdentifier == "UserBannerCell"){
+      cell.hidden = true;
+    }
+    return cell;
+  }
+});
+hookClass("fengapp.PostDetailViewController", {}, {
+  //去除帖子一楼广告
+  "q32@0:8@16q24-tableView:numberOfRowsInSection:": function() {
+    let [view, section] = arguments;
+    if(section == 1){
+      return 0;
+    }
+    return orig(arguments);
+  }
+});
+hookClass("fengapp.NewsListViewController", {}, {
+  //去除首页资讯页banner广告
+  "d32@0:8@16@24-tableView:heightForRowAtIndexPath:": function() {
+    let ret = orig(arguments);
+    if(ret == -1){
+      return ret;
+    }
+    let [view, index] = arguments;
+    view.delegate = null;
+    let cell = [self tableView:view cellForRowAtIndexPath:index];
+    view.delegate = self;
+    if(cell.reuseIdentifier == "NewsFeedAdCell"){
+      return 0;
+    }
+    return ret
+  },
+  "@32@0:8@16@24-tableView:cellForRowAtIndexPath:": function() {
+    let cell = orig(arguments);
+    if(cell.reuseIdentifier == "NewsFeedAdCell"){
+      cell.hidden = true;
+    }
+    return cell;
+  }
+});
+hookClass("fengapp.WFRecommendViewController", {}, {
+  //去除首页推荐页banner广告
+  "d32@0:8@16@24-tableView:heightForRowAtIndexPath:": function() {
+    let ret = orig(arguments);
+    if(ret == -1){
+      return ret;
+    }
+    let [view, index] = arguments;
+    view.delegate = null;
+    let cell = [self tableView:view cellForRowAtIndexPath:index];
+    view.delegate = self;
+    if(cell.reuseIdentifier == "ThreadFeedAdCell"){
+      return 0;
+    }
+    return ret;
+  },
+  "@32@0:8@16@24-tableView:cellForRowAtIndexPath:": function() {
+    let cell = orig(arguments);
+    if(cell.reuseIdentifier == "ThreadFeedAdCell"){
+      cell.hidden = true;
+    }
+    return cell;
+  }
+});
