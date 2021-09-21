@@ -1,0 +1,97 @@
+hookClass("DOUSplashProvider", {}, {
+  //去除启动广告
+  "@16@0:8-init": function() {
+    //return orig(arguments);
+  },
+  "@24@0:8@16-initWithAdvertisement:": function() {
+    //return orig(arguments);
+  }
+});
+hookClass("Frodo.FRDNormalDoodleViewController", {}, {
+  //去除闪屏界面
+  "v16@0:8-viewDidLoad": function() {
+    self.view.hidden = true;
+    return orig(arguments);
+  }
+});
+hookClass("FRDFeed.FeedTimelineDataSource", {}, {
+  //去除首页信息流广告
+  "d32@0:8@16@24-tableView:heightForRowAtIndexPath:": function() {
+    let ret = orig(arguments);
+    if(ret == -1){
+      return ret;
+    }
+    let [view, index] = arguments;
+    if(index.section == 1){
+      let data = self.dataArray[index.row];
+      if(data.isAd){
+        return 0;
+      }
+    }
+    return ret;
+  },
+  "@32@0:8@16@24-tableView:cellForRowAtIndexPath:": function() {
+    let cell = orig(arguments);
+    if(/AdCell/.test(cell.reuseIdentifier)){
+      cell.hidden = true;
+    }
+    return cell;
+  }
+});
+hookClass("FRDRXRSubjectModuleViewController", {}, {
+  //去除书影音页广告
+  "v32@0:8@16@24-webView:didFinishNavigation:": function() {
+    orig(arguments);
+    let jsCode = function(){
+      let inCheck = false;
+      function onDOMChange(){
+        if(inCheck){
+          return;
+        }
+        inCheck = true;
+        let sections = document.getElementsByTagName("section");
+        for(let section of sections){
+          let isAd = false;
+          let alist = section.getElementsByTagName("a");
+          for(let a of alist){
+            if(/ad_type/.test(a.href)){
+              isAd = true;
+              break;
+            }
+          }
+          if(isAd){
+            section.remove();
+          }
+        }
+        inCheck = false;
+      }
+      document.addEventListener('DOMSubtreeModified', onDOMChange);
+    }
+    jsCode = "(" + jsCode.toString() + ")()";
+    [arguments[0] evaluateJavaScript:jsCode completionHandler:null];
+  }
+});
+hookClass("ReviewsDataSource", {}, {
+  //去除影评列表信息流广告
+  "d32@0:8@16@24-tableView:heightForRowAtIndexPath:": function() {
+    let ret = orig(arguments);
+    if(ret == -1){
+      return ret;
+    }
+    let [view, index] = arguments;
+    if(index.row == 0 && index.section < self.dataArray.count){
+      let data = self.dataArray[index.section - 2];
+      if(data.adInfo){
+        return 0;
+      }
+    }
+    return ret;
+  },
+  "@32@0:8@16@24-tableView:cellForRowAtIndexPath:": function() {
+    let cell = orig(arguments);
+    if(/AdCell/.test(cell.reuseIdentifier)){
+      cell.hidden = true;
+    }
+    return cell;
+  }
+});
