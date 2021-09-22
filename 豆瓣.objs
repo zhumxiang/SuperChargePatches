@@ -79,7 +79,7 @@ hookClass("ReviewsDataSource", {}, {
       return ret;
     }
     let [view, index] = arguments;
-    if(index.row == 0 && index.section < self.dataArray.count){
+    if(index.row == 0 && index.section - 2 < self.dataArray.count){
       let data = self.dataArray[index.section - 2];
       if(data.adInfo){
         return 0;
